@@ -19,7 +19,7 @@ module Payoneer::Payee
       request_params = {
         payee_id: params[:payee_id],
         already_have_an_account: params[:existing] || false,
-        redirect_url: Payoneer::Configuration.callback_url
+        redirect_url: "#{Payoneer::Configuration.callback_url}?user_id=#{params[:user_id]}"
       }
       request_params.merge(user_params) if params[:user]
 

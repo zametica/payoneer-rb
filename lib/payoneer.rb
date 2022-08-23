@@ -8,6 +8,7 @@ require 'payoneer/account/details'
 
 require 'payoneer/payee/create_link'
 require 'payoneer/payee/status'
+require 'payoneer/payee/release'
 
 require 'payoneer/payout/create'
 require 'payoneer/payout/status'

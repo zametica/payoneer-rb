@@ -32,6 +32,15 @@ module Payoneer
       )
     end
 
+    def delete(path:, body: {}, options: {})
+      request(
+        method: :delete,
+        path: path,
+        body: body,
+        options: options
+      )
+    end
+
     private
 
     def request(method:, path:, body: {}, options: {})
