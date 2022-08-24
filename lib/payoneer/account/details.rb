@@ -2,14 +2,13 @@ module Payoneer::Account
   module Details
     extend Payoneer::RemoteApi
 
-    def call(token)
-      return unless token
+    def call(access_token, account_id)
+      return unless access_token && account_id
       
-      account_id = JWT.decode(token)['account_id']
       map get(
         path: "/accounts/#{account_id}/details",
         options: {
-          access_token: token
+          access_token: access_token
         }
       )
     end

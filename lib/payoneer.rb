@@ -5,6 +5,7 @@ require 'payoneer/error'
 
 require 'payoneer/account/auth'
 require 'payoneer/account/details'
+require 'payoneer/account/util'
 
 require 'payoneer/payee/create_link'
 require 'payoneer/payee/status'

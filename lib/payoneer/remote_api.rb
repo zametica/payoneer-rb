@@ -64,7 +64,7 @@ module Payoneer
         )
       end
 
-      body
+      body.with_indifferent_access
     end
 
     def headers(options = {})
@@ -77,7 +77,7 @@ module Payoneer
     def access_token
       Rails.cache.fetch(key: 'payoneer_access_token', expires_in: 1.hour) do
         response = HTTParty.post(
-          Payoneer::Configuration.login_url,
+          Payoneer::Configuration.token_url,
           body: {
             grant_type: 'client_credentials',
             scope: 'read write'

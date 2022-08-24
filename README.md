@@ -12,7 +12,7 @@ All of the following properties have to be set in order for gem to work properly
 
 Payoneer.configure do |c|
   c.api_url = # v4 base url (default: https://api.sandbox.payoneer.com/v4)
-  c.login_url = # oauth2 login url (default: https://api.sandbox.payoneer.com/v4)
+  c.auth_url = # oauth2 login url (default: https://login.sandbox.payoneer.com/api/v2/oauth2)
   c.callback_url = # callback url used for sending auth codes
   c.client_id = # client id
   c.client_secret = # client secret
