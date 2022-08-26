@@ -3,18 +3,11 @@ require 'payoneer/configuration'
 require 'payoneer/remote_api'
 require 'payoneer/error'
 
-require 'payoneer/account/auth'
-require 'payoneer/account/details'
-require 'payoneer/account/util'
-
-require 'payoneer/payee/create_link'
-require 'payoneer/payee/status'
-require 'payoneer/payee/release'
-
-require 'payoneer/payout/create'
-require 'payoneer/payout/status'
-
-require 'payoneer/program/balance'
+require 'payoneer/modules/account'
+require 'payoneer/modules/payee'
+require 'payoneer/modules/payout'
+require 'payoneer/modules/program'
+require 'payoneer/modules/util'
 
 module Payoneer
   extend Configuration

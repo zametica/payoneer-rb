@@ -4,6 +4,17 @@ module Payoneer
       yield self
     end
 
+    ENV_URLS = {
+      sandbox: {
+        api: 'https://api.sandbox.payoneer.com/v4',
+        auth: 'https://login.sandbox.payoneer.com/api/v2/oauth2'
+      },
+      production: {
+        api: 'https://api.payoneer.com/v4',
+        auth: 'https://login.payoneer.com/api/v2/oauth2'
+      }
+    }.freeze
+
     def self.authorize_url
       "#{auth_url}/authorize?"\
       "client_id=#{client_id}&"\
@@ -16,11 +27,16 @@ module Payoneer
       "#{auth_url}/token"
     end
 
-    mattr_accessor :api_url
-    @@api_url = 'https://api.sandbox.payoneer.com/v4'
+    def self.api_url
+      ENV_URLS[environment][:api]
+    end
 
-    mattr_accessor :auth_url
-    @@auth_url = 'https://login.sandbox.payoneer.com/api/v2/oauth2'
+    def self.auth_url
+      ENV_URLS[environment][:auth]
+    end
+
+    mattr_accessor :environment
+    @@environment = :sandbox
 
     mattr_accessor :callback_url
     @@callback_url = nil

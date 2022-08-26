@@ -3,17 +3,20 @@ Add gem to your Gemfile and run bundle
 ```ruby
 gem 'payoneer-rails'
 ```
+You can also use the generator to generate the config initializer
+```ruby
+rails generate payoneer:install
+```
 
 # Usage
 ## Configuration
-All of the following properties have to be set in order for gem to work properly. Please keep them in environment variables if possible.
+All of the following properties have to be set in order for gem to work properly
 ```ruby
 # config/initializers/payoneer.rb
 
 Payoneer.configure do |c|
-  c.api_url = # v4 base url (default: https://api.sandbox.payoneer.com/v4)
-  c.auth_url = # oauth2 login url (default: https://login.sandbox.payoneer.com/api/v2/oauth2)
-  c.callback_url = # callback url used for sending auth codes
+  c.environment = # payoneer env (:sandbox (default) | :production)
+  c.callback_url = # callback url used for sending auth codes (Optional)
   c.client_id = # client id
   c.client_secret = # client secret
   c.program_id = # program id
@@ -24,12 +27,12 @@ end
 
 ### Create signup url
 ```ruby
-Payoneer::Payee::CreateLink.call({ payee_id: '<payee_id>' })
+Payoneer::Payee.create_link({ payee_id: '<payee_id>' })
 ```
 
 ### Create a payout
 ```ruby
-Payoneer::Payout::Create.call(
+Payoneer::Payout.create(
   payment_id: '<internal_payment_ref>',
   payee_id: '<payee_id>',
   amount: 170.45,
@@ -40,5 +43,5 @@ Payoneer::Payout::Create.call(
 
 ### Check the program balance
 ```ruby
-Payoneer::Program::Balance.call
+Payoneer::Program.balance
 ```

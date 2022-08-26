@@ -1,8 +1,8 @@
-module Payoneer::Program
-  module Balance
+module Payoneer
+  module Program
     extend Payoneer::RemoteApi
 
-    def call
+    def balance
       get(path: "/programs/#{Payoneer::Configuration.program_id}/balance")['result']
     end
   end

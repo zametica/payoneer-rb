@@ -1,4 +1,4 @@
-module Payoneer::Account
+module Payoneer
   module Util
     extend self
 

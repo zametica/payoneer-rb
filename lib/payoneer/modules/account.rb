@@ -1,8 +1,6 @@
-require 'httparty'
-
-module Payoneer::Account
-  module Auth
-    extend self
+module Payoneer
+  module Account
+    extend Payoneer::RemoteApi
 
     def access_token(code)
       fetch_token({
@@ -19,6 +17,12 @@ module Payoneer::Account
       })
     end
 
+    def details(access_token, account_id)
+      return unless access_token && account_id
+
+      get_details(access_token, account_id)
+    end
+
     private
 
     def fetch_token(body)
@@ -33,6 +37,17 @@ module Payoneer::Account
           password: Payoneer::Configuration.client_secret
         }
       )
+    end
+
+    def get_details(access_token, account_id)
+      response = get(
+        path: "/accounts/#{account_id}/details",
+        options: {
+          access_token: access_token
+        }
+      )
+      details = response.dig('result', 'account_details')
+      details['contact'].merge(details['address'])
     end
   end
 end
