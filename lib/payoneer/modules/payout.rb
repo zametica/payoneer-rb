@@ -3,17 +3,19 @@ module Payoneer
     extend Payoneer::RemoteApi
 
     def create(payment_id:, payee_id:, amount:, description:, currency: 'USD')
-      submit_payout({
-        payments: [
-          {
-            client_reference_id: payment_id,
-            payee_id: payee_id,
-            amount: amount,
-            description: description,
-            currency: currency
-          }
-        ]
-      })
+      submit_payout(
+        {
+          payments: [
+            {
+              client_reference_id: payment_id,
+              payee_id: payee_id,
+              amount: amount,
+              description: description,
+              currency: currency
+            }
+          ]
+        }
+      )
       payout_status(payment_id)
     rescue Payoneer::Error => e
       {
@@ -25,7 +27,7 @@ module Payoneer
     end
 
     def status(client_reference_id)
-      get(path: "/programs/#{Payoneer::Configuration.program_id}/payouts/#{client_reference_id}/status")['result']
+      payout_status(client_reference_id)
     end
 
     private
@@ -37,9 +39,12 @@ module Payoneer
       )
     end
 
-    def payout_status(payment_id)
-      status = Payoneer::Payout::Status.call(payment_id)
-      status.merge(payment_id: payment_id)
+    def payout_status(client_reference_id)
+      status = get(
+        path: "/programs/#{Payoneer::Configuration.program_id}/payouts"\
+              "/#{client_reference_id}/status"
+      )['result']
+      status.merge(payment_id: client_reference_id)
     end
   end
 end
