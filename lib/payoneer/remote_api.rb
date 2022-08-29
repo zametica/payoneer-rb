@@ -74,21 +74,36 @@ module Payoneer
       }
     end
 
-    def access_token
-      Rails.cache.fetch(key: 'payoneer_access_token', expires_in: 1.hour) do
-        response = HTTParty.post(
-          Payoneer::Configuration.token_url,
-          body: {
-            grant_type: 'client_credentials',
-            scope: 'read write'
-          },
-          basic_auth: {
-            username: Payoneer::Configuration.client_id,
-            password: Payoneer::Configuration.client_secret
-          }
-        )
-        JSON.parse(response.body)['access_token']
-      end
+    def access_token(force: false)
+      response = Rails.cache.fetch(
+        key: 'payoneer_access_token',
+        expires_in: 1.day,
+        force: force
+      ) { fetch_token }
+
+      access_token(force: true) if 1.day.from_now >= response[:expires_at]
+
+      response[:access_token]
+    end
+
+    def fetch_token
+      response = HTTParty.post(
+        Payoneer::Configuration.token_url,
+        body: {
+          grant_type: 'client_credentials',
+          scope: 'read write'
+        },
+        basic_auth: {
+          username: Payoneer::Configuration.client_id,
+          password: Payoneer::Configuration.client_secret
+        }
+      )
+
+      parsed_body = JSON.parse(response.body)
+      {
+        access_token: parsed_body['access_token'],
+        expires_at: parsed_body['expires_in'].seconds.from_now
+      }
     end
   end
 end
