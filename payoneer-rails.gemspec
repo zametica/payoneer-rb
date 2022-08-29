@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary       = 'Payoneer V4 integration with Rails'
   s.homepage      = 'https://github.com/zametica/payoneer-rails'
 
-  s.files         =  Dir.glob('{lib}/**/*')
+  s.files         =  Dir.glob('{lib, spec}/**/*')
   s.files         += %w[CHANGELOG.md LICENSE README.md]
   s.files         += %w[Rakefile payoneer-rails.gemspec]
 
@@ -19,7 +19,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'httparty', '~> 0.17.0'
 
-  s.add_development_dependency 'bundler', '~> 1.3.0'
+  s.add_development_dependency 'bundler', '~> 2.3.0'
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rails', '~> 5.0'
+  s.add_development_dependency 'rspec-rails', '~> 5.1.0'
+  s.add_development_dependency 'pry', '~> 0.14.0'
 end

@@ -44,7 +44,7 @@ module Payoneer
         path: "/programs/#{Payoneer::Configuration.program_id}/payouts"\
               "/#{client_reference_id}/status"
       )['result']
-      status.merge(payment_id: client_reference_id)
+      status.merge(payment_id: client_reference_id).with_indifferent_access
     end
   end
 end

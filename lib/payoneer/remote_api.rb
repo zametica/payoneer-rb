@@ -3,6 +3,8 @@ require 'httparty'
 module Payoneer
   module RemoteApi
     def self.extended(base)
+      return unless base.is_a? Module
+
       base.extend base
     end
 
@@ -75,7 +77,7 @@ module Payoneer
     end
 
     def access_token(force: false)
-      response = Rails.cache.fetch(
+      response = ::Rails.cache.fetch(
         key: 'payoneer_access_token',
         expires_in: 1.day,
         force: force

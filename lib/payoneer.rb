@@ -1,3 +1,8 @@
+require 'rails'
+require 'active_support'
+require 'active_support/time'
+require 'active_support/core_ext/hash/indifferent_access'
+
 require 'payoneer/version'
 require 'payoneer/configuration'
 require 'payoneer/remote_api'
