@@ -7,15 +7,17 @@ module Payoneer
         path: "/programs/#{Payoneer::Configuration.program_id}/payees/registration-link",
         body: registration_params(params)
       )
-      response.dig('result', 'registration_link')
+      CreateLink.new(response)
     end
 
     def status(payee_id)
-      get(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}/status")['result']
+      response = get(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}/status")
+      Status.new(response)
     end
 
     def release(payee_id)
-      delete(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}")
+      response = delete(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}")
+      Release.new(response)
     end
 
     private
@@ -24,7 +26,7 @@ module Payoneer
       {
         payee_id: params[:payee_id],
         already_have_an_account: params[:existing] || false,
-        redirect_url: "#{Payoneer::Configuration.authorize_url}&state=#{params[:user_id]}"
+        redirect_url: "#{Payoneer::Configuration.authorize_url}&client_id=#{params[:client_id]}&state=#{params[:user_id]}"
       }.compact
     end
   end

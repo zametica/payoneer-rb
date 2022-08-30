@@ -3,7 +3,8 @@ module Payoneer
     extend Payoneer::RemoteApi
 
     def balance
-      get(path: "/programs/#{Payoneer::Configuration.program_id}/balance")['result']
+      response = get(path: "/programs/#{Payoneer::Configuration.program_id}/balance")
+      Balance.new(response)
     end
   end
 end
