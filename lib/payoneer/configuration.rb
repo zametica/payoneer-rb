@@ -17,14 +17,9 @@ module Payoneer
 
     def self.authorize_url
       "#{auth_url}/authorize?"\
-      "client_id=#{client_id}&"\
       "redirect_uri=#{callback_url}&"\
       "scope=read%20write%20openid%20personal-details&"\
       "response_type=code"
-    end
-
-    def self.token_url
-      "#{auth_url}/token"
     end
 
     def self.api_url
@@ -40,12 +35,6 @@ module Payoneer
 
     mattr_accessor :callback_url
     @@callback_url = nil
-
-    mattr_accessor :client_id
-    @@client_id = nil
-
-    mattr_accessor :client_secret
-    @@client_secret = nil
 
     mattr_accessor :program_id
     @@program_id = nil

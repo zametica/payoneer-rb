@@ -2,7 +2,7 @@ module Payoneer
   module Payout
     extend Payoneer::RemoteApi
 
-    def create(payment_id:, payee_id:, amount:, description:, currency: 'USD')
+    def create(payment_id:, payee_id:, amount:, description:, currency: 'USD', **args)
       submit_payout(
         {
           payments: [
@@ -14,37 +14,47 @@ module Payoneer
               currency: currency
             }
           ]
-        }
+        },
+        args
       )
-      payout_status(payment_id)
+      payout_status(payment_id, args)
     rescue Payoneer::Error => e
-      {
+      Status.convert({
         status: 'Failed',
-        error: e.description,
-        reason: e.details,
-        payment_id: payment_id
-      }.with_indifferent_access
+        payment_id: payment_id,
+        error: {
+          description: e.description,
+          reason: e.details
+        }
+      })
     end
 
-    def status(client_reference_id)
-      payout_status(client_reference_id)
+    def status(payment_id:, **args)
+      payout_status(payment_id, args)
     end
 
     private
 
-    def submit_payout(params)
+    def submit_payout(params, args)
       post(
         path: "/programs/#{Payoneer::Configuration.program_id}/masspayouts",
-        body: params
+        body: params,
+        options: args
       )
     end
 
-    def payout_status(client_reference_id)
-      status = get(
+    def payout_status(payment_id, args)
+      get(
         path: "/programs/#{Payoneer::Configuration.program_id}/payouts"\
-              "/#{client_reference_id}/status"
-      )['result']
-      status.merge(payment_id: client_reference_id).with_indifferent_access
+              "/#{payment_id}/status",
+        options: {
+          serializer: Status,
+          response_params: {
+            payment_id: payment_id
+          },
+          **args
+        }
+      )
     end
   end
 end

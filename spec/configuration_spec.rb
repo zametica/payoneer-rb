@@ -8,8 +8,6 @@ RSpec.describe Payoneer::Configuration do
   before do
     subject.configure do |c|
       c.environment = :sandbox
-      c.client_id = SecureRandom.uuid
-      c.client_secret = SecureRandom.uuid
       c.program_id = 1
     end
   end
@@ -18,18 +16,9 @@ RSpec.describe Payoneer::Configuration do
     it 'returns authorization url' do
       expect(described_class.authorize_url).to eq(
         "#{described_class.auth_url}/authorize?"\
-        "client_id=#{subject.client_id}&"\
         "redirect_uri=#{subject.callback_url}&"\
         "scope=read%20write%20openid%20personal-details&"\
         "response_type=code"
-      )
-    end
-  end
-
-  describe '.token_url' do
-    it 'returns token url' do
-      expect(described_class.token_url).to eq(
-        "#{described_class.auth_url}/token"
       )
     end
   end

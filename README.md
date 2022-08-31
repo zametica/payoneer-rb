@@ -3,10 +3,6 @@ Add gem to your Gemfile and run bundle
 ```ruby
 gem 'payoneer-rails'
 ```
-You can also use the generator to generate the config initializer
-```ruby
-rails generate payoneer:install
-```
 
 # Usage
 ## Configuration

@@ -3,49 +3,56 @@ require 'spec_helper'
 RSpec.describe Payoneer::Payee do
   describe '.create_link' do
     before do
-      allow(described_class).to receive(:post)
-        .with(path: /.+\/registration-link/, body: hash_including(:redirect_url))
-        .and_return({
-          'result' => {
-            'registration_link' => 'http://example.com'
+      allow(HTTParty).to receive(:post)
+        .with(/.+\/registration-link/, hash_including(:body, headers: hash_including('Authorization')))
+        .and_return(stub_http_response(
+          body: {
+            'result' => {
+              'registration_link' => 'http://example.com'
+            }
           }
-        })
+        ))
     end
 
     it 'returns link in the response' do
-      expect(described_class.create_link({})).to eq 'http://example.com'
+      result = described_class.create_link(params: {}, access_token: '')
+      expect(result.registration_link).to eq 'http://example.com'
     end
   end
 
   describe '.status' do
     before do
-      allow(described_class).to receive(:get)
-        .with(path: /.+\/status/)
-        .and_return({
-          'result' => {
-            'status' => 'Active'
+      allow(HTTParty).to receive(:get)
+        .with(/.+\/status/, anything())
+        .and_return(stub_http_response(
+          body: {
+            'result' => {
+              'status' => 'Active'
+            }
           }
-        })
+        ))
     end
 
     it 'returns result from body' do
-      expect(described_class.status('')['status']).to eq 'Active'
+      expect(described_class.status(payee_id: '').status).to eq 'Active'
     end
   end
 
   describe '.release' do
     before do
-      allow(described_class).to receive(:delete)
-        .with(path: /.+\/payees\/.*/)
-        .and_return({
-          'result' => {
-            'payee_id' => '12345'
+      allow(HTTParty).to receive(:delete)
+        .with(/.+\/payees\/.*/, anything())
+        .and_return(stub_http_response(
+          body: {
+            'result' => {
+              'payee_id' => '12345'
+            }
           }
-        })
+        ))
     end
 
     it 'returns result from body' do
-      expect(described_class.release('')['result']['payee_id']).to_not be_nil
+      expect(described_class.release(payee_id: '').payee_id).to eq '12345'
     end
   end
 end
