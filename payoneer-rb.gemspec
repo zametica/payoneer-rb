@@ -1,7 +1,7 @@
 require File.expand_path('lib/payoneer/version', __dir__)
 
 Gem::Specification.new do |s|
-  s.name          = 'payoneer-rails'
+  s.name          = 'payoneer-rb'
   s.version       = Payoneer::VERSION
   s.platform      = Gem::Platform::RUBY
   s.license       = 'MIT'
@@ -9,11 +9,11 @@ Gem::Specification.new do |s|
   s.email         = ['amirzametica@gmail.com']
   s.description   = 'This library provides integration with Payoneer V4 API'
   s.summary       = 'Payoneer V4 integration'
-  s.homepage      = 'https://github.com/zametica/payoneer-rails'
+  s.homepage      = 'https://github.com/zametica/payoneer-rb'
 
   s.files         =  Dir.glob('{lib, spec}/**/*')
   s.files         += %w[CHANGELOG.md LICENSE README.md]
-  s.files         += %w[Rakefile payoneer-rails.gemspec]
+  s.files         += %w[Rakefile payoneer-rb.gemspec]
 
   s.require_path = 'lib'
 

@@ -1,7 +1,7 @@
 # Installation
 Add gem to your Gemfile and run bundle
 ```ruby
-gem 'payoneer-rails'
+gem 'payoneer-rb'
 ```
 
 # Usage
@@ -13,8 +13,6 @@ All of the following properties have to be set in order for gem to work properly
 Payoneer.configure do |c|
   c.environment = # payoneer env (:sandbox (default) | :production)
   c.callback_url = # callback url used for sending auth codes (Optional)
-  c.client_id = # client id
-  c.client_secret = # client secret
   c.program_id = # program id
 end
 ```
@@ -23,7 +21,7 @@ end
 
 ### Create signup url
 ```ruby
-Payoneer::Payee.create_link({ payee_id: '<payee_id>' })
+Payoneer::Payee.create_link(params: { payee_id: '<payee_id>' })
 ```
 
 ### Create a payout
