@@ -2,10 +2,10 @@ module Payoneer
   module Account
     extend Payoneer::RemoteApi
 
-    def details(access_token:, account_id:)
-      return unless access_token && account_id
+    def details(account_id:, **args)
+      return unless args[:access_token] && account_id
 
-      get_details(access_token, account_id)
+      get_details(args[:access_token], account_id)
     end
 
     private

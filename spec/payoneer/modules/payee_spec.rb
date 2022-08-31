@@ -4,7 +4,7 @@ RSpec.describe Payoneer::Payee do
   describe '.create_link' do
     before do
       allow(HTTParty).to receive(:post)
-        .with(/.+\/registration-link/, anything())
+        .with(/.+\/registration-link/, hash_including(:body, headers: hash_including('Authorization')))
         .and_return(stub_http_response(
           body: {
             'result' => {
@@ -15,7 +15,7 @@ RSpec.describe Payoneer::Payee do
     end
 
     it 'returns link in the response' do
-      result = described_class.create_link({})
+      result = described_class.create_link(params: {}, access_token: '')
       expect(result.registration_link).to eq 'http://example.com'
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe Payoneer::Payee do
     end
 
     it 'returns result from body' do
-      expect(described_class.status('').status).to eq 'Active'
+      expect(described_class.status(payee_id: '').status).to eq 'Active'
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe Payoneer::Payee do
     end
 
     it 'returns result from body' do
-      expect(described_class.release('').payee_id).to eq '12345'
+      expect(described_class.release(payee_id: '').payee_id).to eq '12345'
     end
   end
 end

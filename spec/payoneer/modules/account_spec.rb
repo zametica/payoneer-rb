@@ -24,7 +24,7 @@ RSpec.describe Payoneer::Account do
 
     context 'when token and id provided' do
       it 'returns account details' do
-        response = described_class.details(access_token: '213921321n0dsa09dn2', account_id: '12345')
+        response = described_class.details(account_id: '12345', access_token: '213921321n0dsa09dn2', )
 
         expect(response.account_details[:contact][:email]).to eq 'test@example.com'
         expect(response.account_details[:address][:city]).to eq 'Berlin'
@@ -33,7 +33,7 @@ RSpec.describe Payoneer::Account do
 
     context 'when token is nil' do
       it 'returns nil' do
-        expect(described_class.details(access_token: nil, account_id: '12345')).to be_nil
+        expect(described_class.details(account_id: '12345')).to be_nil
       end
     end
   end

@@ -30,10 +30,13 @@ RSpec.describe Payoneer::Payout do
           payment_id: '12345',
           payee_id: '000',
           amount: 50.0,
-          description: 'test'
+          description: 'test',
+          access_token: ''
         )
+
+        expect(response).to be_kind_of(described_class::Status)
+        expect(response).to be_pending
         expect(response.payment_id).to eq '12345'
-        expect(response.status).to eq 'Pending'
       end
     end
 
@@ -51,6 +54,7 @@ RSpec.describe Payoneer::Payout do
           amount: 50.0,
           description: 'test'
         )
+
         expect(response.status).to eq 'Failed'
         expect(response.payment_id).to_not be_nil
       end
@@ -71,7 +75,8 @@ RSpec.describe Payoneer::Payout do
     end
 
     it 'returns status response merged with payment_id' do
-      response = described_class.status('12345')
+      response = described_class.status(payment_id: '12345')
+
       expect(response.status).to eq 'Pending'
       expect(response.payment_id).to eq '12345'
     end

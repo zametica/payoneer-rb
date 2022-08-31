@@ -88,7 +88,7 @@ module Payoneer
         'Content-Type' => 'application/json'
       }
 
-      headers.merge('Authorization' => "Bearer #{options[:access_token]}") if options[:access_token]
+      headers.merge!('Authorization' => "Bearer #{options[:access_token]}") if options[:access_token]
 
       headers
     end

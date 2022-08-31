@@ -20,6 +20,8 @@ module Payoneer
       update_attributes(response)
     end
 
+    private
+
     def add_methods(keys)
       instance_eval do
         keys.each do |k|

@@ -35,6 +35,8 @@ RSpec.describe Payoneer::RemoteApi do
   
         it 'returns body successfully' do
           response = subject.send(method, path: "/#{method}-success", options: { access_token: '' })
+
+          expect(response).to be_kind_of(Payoneer::Response)
           expect(response.status).to eq 'ok'
         end
       end
