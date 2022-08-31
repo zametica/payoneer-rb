@@ -1,4 +1,3 @@
-require 'rails'
 require 'active_support'
 require 'active_support/time'
 require 'active_support/core_ext/hash/indifferent_access'

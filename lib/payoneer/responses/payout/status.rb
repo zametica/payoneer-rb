@@ -13,7 +13,7 @@ module Payoneer::Payout
     end
 
     def pending?
-      status.in? %w[Pending Pending \Payee]
+      %w[Pending Pending \Payee].include? status
     end
   end
 end

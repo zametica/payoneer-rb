@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors       = ['Amir Zametica']
   s.email         = ['amirzametica@gmail.com']
   s.description   = 'This library provides integration with Payoneer V4 API'
-  s.summary       = 'Payoneer V4 integration with Rails'
+  s.summary       = 'Payoneer V4 integration'
   s.homepage      = 'https://github.com/zametica/payoneer-rails'
 
   s.files         =  Dir.glob('{lib, spec}/**/*')
@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_dependency 'httparty', '~> 0.20', '>= 0.20.0'
+  s.add_dependency 'activesupport', '~> 5.2', '>= 5.2.4'
 
-  s.add_development_dependency 'bundler', '~> 2.3.0'
+  s.add_development_dependency 'bundler', '~> 2.3.0', '>= 2.3.0'
   s.add_development_dependency 'rake', '~> 10.0'
-  s.add_development_dependency 'rails', '~> 5.0'
-  s.add_development_dependency 'rspec-rails', '~> 5.1.0'
+  s.add_development_dependency 'rspec-rails', '~> 5.1', '>= 5.1'
   s.add_development_dependency 'pry', '~> 0.14.0'
 end
