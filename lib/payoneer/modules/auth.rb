@@ -38,7 +38,7 @@ module Payoneer
 
     def revoke_token(token:, client_id:, client_secret:)
       token(
-        path: '/revoke'
+        path: '/revoke',
         body: {
           token_type_hint: 'access_token',
           token: token
@@ -51,7 +51,7 @@ module Payoneer
     private
 
     def token(path: '/token', body:, client_id:, client_secret:)
-      response = post(
+      post(
         path: path,
         body: body,
         options: {
@@ -65,10 +65,6 @@ module Payoneer
           }
         }
       )
-      
-      response.merge(
-        expires_at: response['expires_in'].seconds.from_now
-      ).with_indifferent_access if response['expires_in']
     end
   end
 end

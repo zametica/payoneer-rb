@@ -11,13 +11,12 @@ module Payoneer
     private
 
     def get_details(access_token, account_id)
-      response = get(
+      get(
         path: "/accounts/#{account_id}/details",
         options: {
           access_token: access_token
         }
       )
-      Details.new(response)
     end
   end
 end

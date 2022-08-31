@@ -16,7 +16,7 @@ module Payoneer
         options: options
       )
     end
-  
+
     def get(path:, options: {})
       request(
         method: :get,
@@ -24,7 +24,7 @@ module Payoneer
         options: options
       )
     end
-    
+
     def put(path:, body: {}, options: {})
       request(
         method: :put,
@@ -46,13 +46,15 @@ module Payoneer
     private
 
     def request(method:, path:, body: {}, options: {})
-      parse HTTParty.send(
+      body = parse HTTParty.send(
         method,
         "#{options[:base_url] || Payoneer::Configuration.api_url}#{path}",
         body: body.to_json,
         headers: headers(options),
-        *options
+        **options
       )
+
+      convert(body['result'] || body, options)
     rescue HTTParty::Error => e
       raise Payoneer::Error.new(description: e.message)
     end
@@ -67,17 +69,26 @@ module Payoneer
         )
       end
 
-      body.with_indifferent_access
+      body
+    end
+
+    def convert(result, options = {})
+      serializer = if options[:serializer]&.superclass == Payoneer::Response
+                     options[:serializer]
+                   else
+                     Payoneer::Response
+                   end
+
+      result.merge!(options[:response_params]) if options[:response_params].is_a? Hash
+      serializer.convert(result)
     end
 
     def headers(options = {})
       headers = {
-        'Content-Type'  => 'application/json'
+        'Content-Type' => 'application/json'
       }
 
-      if (options[:access_token])
-        headers.merge('Authorization' => "Bearer #{options[:access_token]}")
-      end
+      headers.merge('Authorization' => "Bearer #{options[:access_token]}") if options[:access_token]
 
       headers
     end

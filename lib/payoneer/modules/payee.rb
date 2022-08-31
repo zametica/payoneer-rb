@@ -3,21 +3,18 @@ module Payoneer
     extend Payoneer::RemoteApi
     
     def create_link(params = {})
-      response = post(
+      post(
         path: "/programs/#{Payoneer::Configuration.program_id}/payees/registration-link",
         body: registration_params(params)
       )
-      CreateLink.new(response)
     end
 
     def status(payee_id)
-      response = get(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}/status")
-      Status.new(response)
+      get(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}/status")
     end
 
     def release(payee_id)
-      response = delete(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}")
-      Release.new(response)
+      delete(path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}")
     end
 
     private

@@ -18,15 +18,14 @@ module Payoneer
       )
       payout_status(payment_id)
     rescue Payoneer::Error => e
-      Status.new({
-        result: {
-          status: 'Failed',
-          error: {
-            description: e.description,
-            reason: e.details
-          }
+      Status.convert({
+        status: 'Failed',
+        payment_id: payment_id,
+        error: {
+          description: e.description,
+          reason: e.details
         }
-      }, payment_id)
+      })
     end
 
     def status(client_reference_id)
@@ -43,11 +42,16 @@ module Payoneer
     end
 
     def payout_status(client_reference_id)
-      response = get(
+      get(
         path: "/programs/#{Payoneer::Configuration.program_id}/payouts"\
-              "/#{client_reference_id}/status"
+              "/#{client_reference_id}/status",
+        options: {
+          serializer: Status,
+          response_params: {
+            payment_id: client_reference_id
+          }
+        }
       )
-      Status.new(response, client_reference_id)
     end
   end
 end

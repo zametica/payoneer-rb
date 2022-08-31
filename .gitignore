@@ -56,3 +56,5 @@ tmtags
 
 /tmp
 
+## DEBUGGER
+.byebug_history
