@@ -1,6 +1,8 @@
 module Payoneer
   class Response
     attr_reader :body
+
+    delegate :[], to: :body
     
     def self.convert(response)
       case response
