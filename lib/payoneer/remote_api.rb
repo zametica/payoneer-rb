@@ -46,12 +46,13 @@ module Payoneer
     private
 
     def request(method:, path:, body: {}, options: {})
-      body = parse HTTParty.send(
-        method,
-        "#{options[:base_url] || Payoneer::Configuration.api_url}#{path}",
-        body: body.to_json,
-        headers: headers(options),
-        **options
+      body = parse(
+        HTTParty.send(
+          method,
+          "#{options[:base_url] || Payoneer::Configuration.api_url}#{path}",
+          body: request_body(body, options),
+          headers: options[:headers] || headers(options)
+        )
       )
 
       convert(body['result'] || body, options)
@@ -64,15 +65,16 @@ module Payoneer
 
       unless response.code == 200
         raise Payoneer::Error.new(
-          description: body['error_description'],
-          details: body['error_details']
+          description: body['error_description'] || 'Server Error',
+          details: body['error_details'],
+          code: response.code
         )
       end
 
       body
     end
 
-    def convert(result, options = {})
+    def convert(result, options)
       serializer = if options[:serializer]&.superclass == Payoneer::Response
                      options[:serializer]
                    else
@@ -83,13 +85,17 @@ module Payoneer
       serializer.convert(result)
     end
 
-    def headers(options = {})
+    def request_body(body, options)
+      return body if options.stringify_keys.dig('headers', 'Content-Type') != 'application/json'
+      body.to_json
+    end
+
+    def headers(options)
       headers = {
         'Content-Type' => 'application/json'
       }
 
       headers.merge!('Authorization' => "Bearer #{options[:access_token]}") if options[:access_token]
-
       headers
     end
   end

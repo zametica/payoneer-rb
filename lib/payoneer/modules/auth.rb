@@ -6,10 +6,10 @@ module Payoneer
       token(
         body: {
           grant_type: 'client_credentials',
-          scope: 'read write'
-        },
-        client_id: client_id,
-        client_secret: client_secret
+          scope: 'read write',
+          client_id: client_id,
+          client_secret: client_secret
+        }
       )
     end
 
@@ -18,10 +18,10 @@ module Payoneer
         body: {
           grant_type: 'authorization_code',
           redirect_uri: Payoneer::Configuration.callback_url,
-          code: code
-        },
-        client_id: client_id,
-        client_secret: client_secret
+          code: code,
+          client_id: client_id,
+          client_secret: client_secret
+        }
       )
     end
 
@@ -29,10 +29,10 @@ module Payoneer
       token(
         body: {
           grant_type: 'refresh_token',
-          refresh_token: refresh_token
-        },
-        client_id: client_id,
-        client_secret: client_secret
+          refresh_token: refresh_token,
+          client_id: client_id,
+          client_secret: client_secret
+        }
       )
     end
 
@@ -41,16 +41,16 @@ module Payoneer
         path: '/revoke',
         body: {
           token_type_hint: 'access_token',
-          token: token
-        },
-        client_id: client_id,
-        client_secret: client_secret,
+          token: token,
+          client_id: client_id,
+          client_secret: client_secret,
+        }
       )
     end
 
     private
 
-    def token(path: '/token', body:, client_id:, client_secret:)
+    def token(path: '/token', body:)
       post(
         path: path,
         body: body,
@@ -58,10 +58,6 @@ module Payoneer
           base_url: Payoneer::Configuration.auth_url,
           headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          },
-          basic_auth: {
-            username: client_id,
-            password: client_secret
           }
         }
       )
