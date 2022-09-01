@@ -5,7 +5,7 @@ RSpec.describe Payoneer::Auth do
     allow(HTTParty).to receive(:post)
       .with(
         /.+\/token/,
-        hash_including(:body, :headers, :basic_auth)
+        hash_including(:body, :headers)
       )
       .and_return(
         stub_http_response(
@@ -87,7 +87,7 @@ RSpec.describe Payoneer::Auth do
         allow(HTTParty).to receive(:post)
           .with(
             /.+\/revoke/,
-            hash_including(:body, :headers, :basic_auth)
+            hash_including(:body, :headers)
           )
           .and_return(
             stub_http_response(
@@ -109,7 +109,7 @@ RSpec.describe Payoneer::Auth do
         allow(HTTParty).to receive(:post)
           .with(
             /.+\/revoke/,
-            hash_including(:body, :headers, :basic_auth)
+            hash_including(:body, :headers)
           )
           .and_return(
             stub_http_response(

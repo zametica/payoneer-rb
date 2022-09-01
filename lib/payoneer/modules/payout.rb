@@ -18,15 +18,6 @@ module Payoneer
         args
       )
       payout_status(payment_id, args)
-    rescue Payoneer::Error => e
-      Status.convert({
-        status: 'Failed',
-        payment_id: payment_id,
-        error: {
-          description: e.description,
-          reason: e.details
-        }
-      })
     end
 
     def status(payment_id:, **args)
@@ -55,6 +46,15 @@ module Payoneer
           **args
         }
       )
+    rescue Payoneer::Error => e
+      Status.convert({
+        status: 'Failed',
+        payment_id: payment_id,
+        error: {
+          description: e.description,
+          reason: e.details
+        }
+      })
     end
   end
 end
