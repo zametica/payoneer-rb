@@ -57,6 +57,9 @@ RSpec.describe Payoneer::Payout do
 
         expect(response.status).to eq 'Failed'
         expect(response.payment_id).to_not be_nil
+        expect(described_class).to have_received(:get)
+          .with(path: /.+\/payouts/, options: hash_including(:serializer, :response_params))
+          .exactly(4).times
       end
     end
   end
