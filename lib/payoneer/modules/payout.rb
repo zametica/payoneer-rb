@@ -1,4 +1,3 @@
-require 'byebug'
 module Payoneer
   module Payout
     extend Payoneer::RemoteApi
