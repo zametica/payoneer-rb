@@ -17,7 +17,6 @@ module Payoneer
         },
         args
       )
-      payout_status(payment_id, args.merge(retry: true))
     end
 
     def status(payment_id:, **args)
@@ -30,13 +29,16 @@ module Payoneer
       post(
         path: "/programs/#{Payoneer::Configuration.program_id}/masspayouts",
         body: params,
-        options: args
+        options: {
+          response_params: {
+            payment_id: params[:payments][0][:client_reference_id]
+          },
+          **args
+        }
       )
     end
 
     def payout_status(payment_id, args)
-      attempts ||= 0
-
       get(
         path: "/programs/#{Payoneer::Configuration.program_id}/payouts"\
               "/#{payment_id}/status",
@@ -49,10 +51,6 @@ module Payoneer
         }
       )
     rescue Payoneer::Error => e
-      attempts += 1
-
-      retry if args[:retry] && attempts <= 3
-
       Status.convert({
         status: 'Failed',
         payment_id: payment_id,

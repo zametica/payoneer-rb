@@ -75,6 +75,8 @@ module Payoneer
     end
 
     def convert(result, options)
+      result = { result: result } unless result.is_a? Hash
+
       serializer = if options[:serializer]&.superclass == Payoneer::Response
                      options[:serializer]
                    else
