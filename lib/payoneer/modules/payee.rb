@@ -34,11 +34,20 @@ module Payoneer
     private
 
     def registration_params(params)
-      {
+      registration_params = {
         payee_id: params[:payee_id],
         already_have_an_account: params[:existing] || false,
-        redirect_url: "#{Payoneer::Configuration.authorize_url}&client_id=#{params[:client_id]}&state=#{params[:user_id]}"
-      }.compact
+      }
+
+      if (params[:consent])
+        registration_params.merge!(
+          redirect_url: "#{Payoneer::Configuration.authorize_url}&\
+                         client_id=#{params[:client_id]}&\
+                         state=#{params[:user_id]}"
+        )
+      end
+
+      registration_params
     end
   end
 end
