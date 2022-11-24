@@ -24,6 +24,13 @@ module Payoneer
       )
     end
 
+    def details(payee_id:, **args)
+      get(
+        path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}/details",
+        options: args
+      )
+    end
+
     private
 
     def registration_params(params)

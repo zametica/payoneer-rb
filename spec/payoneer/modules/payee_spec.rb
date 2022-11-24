@@ -55,4 +55,32 @@ RSpec.describe Payoneer::Payee do
       expect(described_class.release(payee_id: '').payee_id).to eq '12345'
     end
   end
+
+  describe '.details' do
+    before do
+      allow(HTTParty).to receive(:get)
+        .with(/.+\/details/, anything())
+        .and_return(stub_http_response(
+          body: {
+            'result' => {
+              'account_id' => '5510700',
+              'type' => 'INDIVIDUAL',
+              'contract' => {
+                'email' => 'demo008@yopmail.com'
+              },
+              'address' => {
+                'city' => 'Berlin'
+              }
+            }
+          }
+        ))
+    end
+
+    it 'returns result from body' do
+      response = described_class.details(payee_id: '')
+
+      expect(response[:contract][:email]).to eq 'demo008@yopmail.com'
+      expect(response[:address][:city]).to eq 'Berlin'
+    end
+  end
 end
