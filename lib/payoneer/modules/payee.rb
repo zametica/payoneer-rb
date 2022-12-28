@@ -39,7 +39,7 @@ module Payoneer
         already_have_an_account: params[:existing] || false,
       }
 
-      if (params[:consent])
+      if params[:consent]
         registration_params.merge!(
           redirect_url: "#{Payoneer::Configuration.authorize_url}&\
                          client_id=#{params[:client_id]}&\

@@ -18,8 +18,8 @@ module Payoneer
     def self.authorize_url
       "#{auth_url}/authorize?"\
       "redirect_uri=#{callback_url}&"\
-      "scope=read%20write%20openid%20personal-details&"\
-      "response_type=code"
+      'scope=read%20write%20openid%20personal-details&'\
+      'response_type=code'
     end
 
     def self.api_url

@@ -51,14 +51,16 @@ module Payoneer
         }
       )
     rescue Payoneer::Error => e
-      Status.convert({
-        status: 'Failed',
-        payment_id: payment_id,
-        error: {
-          description: e.description,
-          reason: e.details
+      Status.convert(
+        {
+          status: 'Failed',
+          payment_id: payment_id,
+          error: {
+            description: e.description,
+            reason: e.details
+          }
         }
-      })
+      )
     end
   end
 end

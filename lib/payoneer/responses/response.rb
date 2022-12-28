@@ -3,13 +3,13 @@ module Payoneer
     attr_reader :body
 
     delegate :[], to: :body
-    
+
     def self.convert(response)
       case response
       when Array
         response.map { |i| convert(i) }
       when Hash
-        self.new(response)
+        new(response)
       else
         response
       end

@@ -50,7 +50,7 @@ module Payoneer
 
     private
 
-    def token(path: '/token', body:)
+    def token(body:, path: '/token')
       post(
         path: path,
         body: body,

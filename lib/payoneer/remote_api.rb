@@ -90,6 +90,7 @@ module Payoneer
     def request_body(body, options)
       content_type = options.stringify_keys.dig('headers', 'Content-Type')
       return body if content_type && content_type != 'application/json'
+
       body.to_json
     end
 

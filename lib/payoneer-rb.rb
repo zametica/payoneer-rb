@@ -1,1 +1,1 @@
-require File.dirname(__FILE__) + '/payoneer'
+require "#{File.dirname(__FILE__)}/payoneer"

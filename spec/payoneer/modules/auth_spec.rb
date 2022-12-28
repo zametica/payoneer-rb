@@ -12,7 +12,7 @@ RSpec.describe Payoneer::Auth do
           code: code,
           body: {
             access_token: SecureRandom.uuid,
-            expires_in: 120000
+            expires_in: 120_000
           }
         )
       )
