@@ -1,25 +1,28 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe Payoneer::Account do
   describe '.details' do
     before do
       allow(HTTParty).to receive(:get)
-        .and_return(double(
-          'HTTParty::Response',
-          code: 200,
-          body: {
-            'result' => {
-              'account_details' => {
-                'contact' => {
-                  'email' => 'test@example.com'
-                },
-                'address' => {
-                  'city' => 'Berlin'
+        .and_return(
+          stub_http_response(
+            code: 200,
+            body: {
+              'result' => {
+                'account_details' => {
+                  'contact' => {
+                    'email' => 'test@example.com'
+                  },
+                  'address' => {
+                    'city' => 'Berlin'
+                  }
                 }
               }
             }
-          }.to_json
-        ))
+          )
+        )
     end
 
     context 'when token and id provided' do

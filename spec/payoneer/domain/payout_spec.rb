@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe Payoneer::Payout do
@@ -6,11 +8,13 @@ RSpec.describe Payoneer::Payout do
       before do
         allow(HTTParty).to receive(:post)
           .with(/.+\/masspayouts/, hash_including(:body, :headers))
-          .and_return(stub_http_response(
-            body: {
-              'result' => 'Payments Created'
-            }
-          ))
+          .and_return(
+            stub_http_response(
+              body: {
+                'result' => 'Payments Created'
+              }
+            )
+          )
       end
 
       it 'returns payment id successfully' do
@@ -31,12 +35,14 @@ RSpec.describe Payoneer::Payout do
       before do
         allow(HTTParty).to receive(:post)
           .with(/.+\/masspayouts/, hash_including(:body, :headers))
-          .and_return(stub_http_response(
-            code: 400,
-            body: {
-              'error' => 'Bad request'
-            }
-          ))
+          .and_return(
+            stub_http_response(
+              code: 400,
+              body: {
+                'error' => 'Bad request'
+              }
+            )
+          )
       end
 
       it 'raises the payoneer error' do
@@ -55,13 +61,15 @@ RSpec.describe Payoneer::Payout do
       before do
         allow(HTTParty).to receive(:get)
           .with(/.+\/payouts/, hash_including(:body, :headers))
-          .and_return(stub_http_response(
-            body: {
-              'result' => {
-                'status' => 'Pending'
+          .and_return(
+            stub_http_response(
+              body: {
+                'result' => {
+                  'status' => 'Pending'
+                }
               }
-            }
-          ))
+            )
+          )
       end
 
       it 'returns status response merged with payment_id' do
@@ -76,12 +84,14 @@ RSpec.describe Payoneer::Payout do
       before do
         allow(HTTParty).to receive(:get)
           .with(/.+\/payouts/, hash_including(:body, :headers))
-          .and_return(stub_http_response(
-            code: 400,
-            body: {
-              'error' => 'Not found'
-            }
-          ))
+          .and_return(
+            stub_http_response(
+              code: 400,
+              body: {
+                'error' => 'Not found'
+              }
+            )
+          )
       end
 
       it 'returns status Failed' do

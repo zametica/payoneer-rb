@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Payoneer
-  module Auth
+  module Auth # :nodoc:
     extend Payoneer::RemoteApi
 
     def application_token(client_id:, client_secret:)

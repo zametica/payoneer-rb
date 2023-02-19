@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Payoneer
-  module Payout
+  module Payout # :nodoc:
     extend Payoneer::RemoteApi
 
     def create(payment_id:, payee_id:, amount:, description:, currency: 'USD', **args)

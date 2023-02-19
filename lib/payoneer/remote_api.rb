@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'httparty'
 
 module Payoneer
-  module RemoteApi
+  module RemoteApi # :nodoc:
     def self.extended(base)
       return unless base.is_a? Module
 
@@ -63,7 +65,7 @@ module Payoneer
     def parse(response)
       body = JSON.parse(response.body)
 
-      unless response.code == 200
+      unless response.success?
         raise Payoneer::Error.new(
           description: body['error_description'] || 'Server Error',
           details: body['error_details'],
@@ -89,7 +91,7 @@ module Payoneer
 
     def request_body(body, options)
       content_type = options.stringify_keys.dig('headers', 'Content-Type')
-      return body if content_type && content_type != 'application/json'
+      return body if content_type.present? && content_type != 'application/json'
 
       body.to_json
     end

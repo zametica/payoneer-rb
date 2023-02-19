@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Payoneer
-  module Payee
+  module Payee # :nodoc:
     extend Payoneer::RemoteApi
 
     def create_link(params: {}, **args)
@@ -36,18 +38,19 @@ module Payoneer
     def registration_params(params)
       registration_params = {
         payee_id: params[:payee_id],
-        already_have_an_account: params[:existing] || false,
+        already_have_an_account: params[:existing] || false
       }
 
-      if params[:consent]
-        registration_params.merge!(
-          redirect_url: "#{Payoneer::Configuration.authorize_url}&\
+      registration_params.merge!(consent_flow_params) if params[:consent]
+      registration_params
+    end
+
+    def consent_flow_params
+      {
+        redirect_url: "#{Payoneer::Configuration.authorize_url}&\
                          client_id=#{params[:client_id]}&\
                          state=#{params[:user_id]}"
-        )
-      end
-
-      registration_params
+      }
     end
   end
 end

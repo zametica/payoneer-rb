@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
 
   s.require_path = 'lib'
 
-  s.add_dependency 'httparty', '~> 0.20', '>= 0.20.0'
   s.add_dependency 'activesupport', '>= 5.2.4'
+  s.add_dependency 'httparty', '~> 0.20', '>= 0.20.0'
 
   s.add_development_dependency 'bundler', '~> 2.3.0', '>= 2.3.0'
+  s.add_development_dependency 'pry', '~> 0.14.0'
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rspec', '~> 3.0'
-  s.add_development_dependency 'pry', '~> 0.14.0'
 end

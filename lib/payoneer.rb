@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support'
 require 'active_support/time'
 require 'active_support/core_ext/hash/indifferent_access'
@@ -10,12 +12,14 @@ require 'payoneer/error'
 require 'payoneer/responses/response'
 require 'payoneer/responses/payout/status'
 
-require 'payoneer/modules/account'
-require 'payoneer/modules/auth'
-require 'payoneer/modules/payee'
-require 'payoneer/modules/payout'
-require 'payoneer/modules/program'
-require 'payoneer/modules/util'
+require 'payoneer/domain/account'
+require 'payoneer/domain/auth'
+require 'payoneer/domain/payee'
+require 'payoneer/domain/payout'
+require 'payoneer/domain/program'
+require 'payoneer/domain/util'
+
+require 'payoneer/errors/parse_error'
 
 module Payoneer
   extend Configuration

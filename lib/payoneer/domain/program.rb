@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Payoneer
-  module Program
+  module Program # :nodoc:
     extend Payoneer::RemoteApi
 
     def balance(**args)

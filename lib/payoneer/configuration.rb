@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Payoneer
-  module Configuration
+  module Configuration # :nodoc:
     def configure
       yield self
     end

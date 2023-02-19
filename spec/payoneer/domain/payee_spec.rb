@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe Payoneer::Payee do
@@ -5,13 +7,15 @@ RSpec.describe Payoneer::Payee do
     before do
       allow(HTTParty).to receive(:post)
         .with(/.+\/registration-link/, hash_including(:body, headers: hash_including('Authorization')))
-        .and_return(stub_http_response(
-          body: {
-            'result' => {
-              'registration_link' => 'http://example.com'
+        .and_return(
+          stub_http_response(
+            body: {
+              'result' => {
+                'registration_link' => 'http://example.com'
+              }
             }
-          }
-        ))
+          )
+        )
     end
 
     it 'returns link in the response' do
@@ -23,14 +27,16 @@ RSpec.describe Payoneer::Payee do
   describe '.status' do
     before do
       allow(HTTParty).to receive(:get)
-        .with(/.+\/status/, anything())
-        .and_return(stub_http_response(
-          body: {
-            'result' => {
-              'status' => 'Active'
+        .with(/.+\/status/, anything)
+        .and_return(
+          stub_http_response(
+            body: {
+              'result' => {
+                'status' => 'Active'
+              }
             }
-          }
-        ))
+          )
+        )
     end
 
     it 'returns result from body' do
@@ -41,14 +47,16 @@ RSpec.describe Payoneer::Payee do
   describe '.release' do
     before do
       allow(HTTParty).to receive(:delete)
-        .with(/.+\/payees\/.*/, anything())
-        .and_return(stub_http_response(
-          body: {
-            'result' => {
-              'payee_id' => '12345'
+        .with(/.+\/payees\/.*/, anything)
+        .and_return(
+          stub_http_response(
+            body: {
+              'result' => {
+                'payee_id' => '12345'
+              }
             }
-          }
-        ))
+          )
+        )
     end
 
     it 'returns result from body' do
@@ -59,21 +67,23 @@ RSpec.describe Payoneer::Payee do
   describe '.details' do
     before do
       allow(HTTParty).to receive(:get)
-        .with(/.+\/details/, anything())
-        .and_return(stub_http_response(
-          body: {
-            'result' => {
-              'account_id' => '5510700',
-              'type' => 'INDIVIDUAL',
-              'contract' => {
-                'email' => 'demo008@yopmail.com'
-              },
-              'address' => {
-                'city' => 'Berlin'
+        .with(/.+\/details/, anything)
+        .and_return(
+          stub_http_response(
+            body: {
+              'result' => {
+                'account_id' => '5510700',
+                'type' => 'INDIVIDUAL',
+                'contract' => {
+                  'email' => 'demo008@yopmail.com'
+                },
+                'address' => {
+                  'city' => 'Berlin'
+                }
               }
             }
-          }
-        ))
+          )
+        )
     end
 
     it 'returns result from body' do
