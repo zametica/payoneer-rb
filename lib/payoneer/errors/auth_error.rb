@@ -2,6 +2,6 @@
 
 module Payoneer
   module Errors
-    class ParseError < Payoneer::Error; end
+    class AuthError < Payoneer::Error; end
   end
 end

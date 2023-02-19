@@ -25,7 +25,7 @@ RSpec.describe Payoneer::Util do
       it 'raises the parser error' do
         invalid_token = Base64.encode64('invalid')
         expect { described_class.parse_account_id("0.#{invalid_token}") }.to(
-          raise_error(Payoneer::Errors::ParseError)
+          raise_error(Payoneer::Errors::ParseError, 'Unable to parse the id token')
         )
       end
     end

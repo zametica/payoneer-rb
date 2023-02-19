@@ -45,7 +45,7 @@ module Payoneer
           token_type_hint: 'access_token',
           token: token,
           client_id: client_id,
-          client_secret: client_secret,
+          client_secret: client_secret
         }
       )
     end
@@ -53,6 +53,14 @@ module Payoneer
     private
 
     def token(body:, path: '/token')
+      if body[:client_id].blank? || body[:client_secret].blank?
+        raise Payoneer::Errors::AuthError.new(description: 'Missing client credentials')
+      end
+
+      perform_request(body, path)
+    end
+
+    def perform_request(body, path)
       post(
         path: path,
         body: body,

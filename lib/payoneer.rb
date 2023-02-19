@@ -20,6 +20,7 @@ require 'payoneer/domain/program'
 require 'payoneer/domain/util'
 
 require 'payoneer/errors/parse_error'
+require 'payoneer/errors/auth_error'
 
 module Payoneer
   extend Configuration

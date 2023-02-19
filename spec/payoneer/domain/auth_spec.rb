@@ -39,6 +39,14 @@ RSpec.describe Payoneer::Auth do
         )
       end
     end
+
+    context 'when client credentials are missing' do
+      it 'raises the auth error' do
+        expect { described_class.application_token(client_id: nil, client_secret: 1) }.to(
+          raise_error(Payoneer::Errors::AuthError, 'Missing client credentials')
+        )
+      end
+    end
   end
 
   describe '.access_token' do

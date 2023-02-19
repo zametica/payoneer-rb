@@ -35,8 +35,10 @@ RSpec.describe Payoneer::Account do
     end
 
     context 'when token is nil' do
-      it 'returns nil' do
-        expect(described_class.details(account_id: '12345')).to be_nil
+      it 'raises the auth error' do
+        expect { described_class.details(account_id: '12345') }.to(
+          raise_error(Payoneer::Errors::AuthError, 'Missing access token')
+        )
       end
     end
   end
