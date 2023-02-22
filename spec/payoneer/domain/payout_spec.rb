@@ -7,7 +7,7 @@ RSpec.describe Payoneer::Payout do
     context 'when successful' do
       before do
         allow(HTTParty).to receive(:post)
-          .with(/.+\/masspayouts/, hash_including(:body, :headers))
+          .with(%r{.+/masspayouts}, hash_including(:body, :headers))
           .and_return(
             stub_http_response(
               body: {
@@ -34,7 +34,7 @@ RSpec.describe Payoneer::Payout do
     context 'when fails' do
       before do
         allow(HTTParty).to receive(:post)
-          .with(/.+\/masspayouts/, hash_including(:body, :headers))
+          .with(%r{.+/masspayouts}, hash_including(:body, :headers))
           .and_return(
             stub_http_response(
               code: 400,
@@ -60,7 +60,7 @@ RSpec.describe Payoneer::Payout do
     context 'when successful' do
       before do
         allow(HTTParty).to receive(:get)
-          .with(/.+\/payouts/, hash_including(:body, :headers))
+          .with(%r{.+/payouts}, hash_including(:body, :headers))
           .and_return(
             stub_http_response(
               body: {
@@ -83,12 +83,12 @@ RSpec.describe Payoneer::Payout do
     context 'when fails' do
       before do
         allow(HTTParty).to receive(:get)
-          .with(/.+\/payouts/, hash_including(:body, :headers))
+          .with(%r{.+/payouts}, hash_including(:body, :headers))
           .and_return(
             stub_http_response(
-              code: 400,
+              code: 500,
               body: {
-                'error' => 'Not found'
+                'error' => 'Internal error'
               }
             )
           )
@@ -99,6 +99,30 @@ RSpec.describe Payoneer::Payout do
 
         expect(response.status).to eq 'Failed'
         expect(response.payment_id).to eq '12345'
+      end
+    end
+
+    context 'when not found' do
+      before do
+        allow(HTTParty).to receive(:get)
+          .with(%r{.+/payouts}, anything)
+          .and_return(
+            stub_http_response(
+              code: 400,
+              body: {
+                'error' => 'Not found',
+                'error_details' => {
+                  'code' => 2306
+                }
+              }
+            )
+          )
+      end
+
+      it 'returns status Failed' do
+        response = described_class.status(payment_id: '12345')
+
+        expect(response).to be_not_found
       end
     end
   end

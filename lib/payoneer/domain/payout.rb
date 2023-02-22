@@ -4,6 +4,15 @@ module Payoneer
   module Payout # :nodoc:
     extend Payoneer::RemoteApi
 
+    def mass_payout(payments: [], **args)
+      submit_payout(
+        {
+          payments: payments
+        },
+        args
+      )
+    end
+
     def create(payment_id:, payee_id:, amount:, description:, currency: 'USD', **args)
       submit_payout(
         {

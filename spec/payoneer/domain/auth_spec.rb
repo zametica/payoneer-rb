@@ -6,7 +6,7 @@ RSpec.describe Payoneer::Auth do
   def stub_token(code: 200)
     allow(HTTParty).to receive(:post)
       .with(
-        /.+\/token/,
+        %r{.+/token},
         hash_including(:body, :headers)
       )
       .and_return(

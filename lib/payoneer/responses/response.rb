@@ -27,7 +27,8 @@ module Payoneer
     def add_methods(keys)
       instance_eval do
         keys.each do |k|
-          self.class.send(:define_method, k.to_s.underscore) { @body[k] }
+          respond_to?(k.to_s.underscore) ||
+            self.class.send(:define_method, k.to_s.underscore) { @body[k] }
         end
       end
     end

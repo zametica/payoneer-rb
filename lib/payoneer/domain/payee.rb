@@ -7,7 +7,7 @@ module Payoneer
     def create_link(params: {}, **args)
       post(
         path: "/programs/#{Payoneer::Configuration.program_id}/payees/registration-link",
-        body: registration_params(params),
+        body: link_params(params),
         options: args
       )
     end
@@ -15,7 +15,7 @@ module Payoneer
     def status(payee_id:, **args)
       get(
         path: "/programs/#{Payoneer::Configuration.program_id}/payees/#{payee_id}/status",
-        options: args
+        options: { serializer: Status }.merge(args)
       )
     end
 
@@ -35,17 +35,17 @@ module Payoneer
 
     private
 
-    def registration_params(params)
+    def link_params(params)
       registration_params = {
         payee_id: params[:payee_id],
         already_have_an_account: params[:existing] || false
       }
 
-      registration_params.merge!(consent_flow_params) if params[:consent]
+      registration_params.merge!(consent_flow_params(params)) if params[:consent]
       registration_params
     end
 
-    def consent_flow_params
+    def consent_flow_params(params)
       {
         redirect_url: "#{Payoneer::Configuration.authorize_url}&\
                          client_id=#{params[:client_id]}&\

@@ -11,6 +11,7 @@ require 'payoneer/error'
 
 require 'payoneer/responses/response'
 require 'payoneer/responses/payout/status'
+require 'payoneer/responses/payee/status'
 
 require 'payoneer/domain/account'
 require 'payoneer/domain/auth'

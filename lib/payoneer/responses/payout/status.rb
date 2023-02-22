@@ -1,19 +1,29 @@
-module Payoneer::Payout
-  class Status < Payoneer::Response
-    def rejected?
-      reason_code.present?
-    end
+# frozen_string_literal: true
 
-    def cancelled?
-      status == 'Cancelled'
-    end
+module Payoneer
+  module Payout
+    class Status < Payoneer::Response # :nodoc:
+      PAYOUT_NOT_FOUND_CODE = 2306
 
-    def success?
-      status == 'Transferred'
-    end
+      def rejected?
+        reason_code.present?
+      end
 
-    def pending?
-      %w[Pending Pending \Payee].include? status
+      def cancelled?
+        status == 'Cancelled'
+      end
+
+      def success?
+        status == 'Transferred'
+      end
+
+      def pending?
+        %w[Pending Pending \Payee].include? status
+      end
+
+      def not_found?
+        error&.dig('reason', 'code') == PAYOUT_NOT_FOUND_CODE
+      end
     end
   end
 end

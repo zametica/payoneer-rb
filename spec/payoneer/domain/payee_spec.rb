@@ -6,7 +6,7 @@ RSpec.describe Payoneer::Payee do
   describe '.create_link' do
     before do
       allow(HTTParty).to receive(:post)
-        .with(/.+\/registration-link/, hash_including(:body, headers: hash_including('Authorization')))
+        .with(%r{.+/registration-link}, hash_including(:body, headers: hash_including('Authorization')))
         .and_return(
           stub_http_response(
             body: {
@@ -27,12 +27,15 @@ RSpec.describe Payoneer::Payee do
   describe '.status' do
     before do
       allow(HTTParty).to receive(:get)
-        .with(/.+\/status/, anything)
+        .with(%r{.+/status}, anything)
         .and_return(
           stub_http_response(
             body: {
               'result' => {
-                'status' => 'Active'
+                'status' => {
+                  'type' => 1,
+                  'description' => 'Active'
+                }
               }
             }
           )
@@ -40,14 +43,14 @@ RSpec.describe Payoneer::Payee do
     end
 
     it 'returns result from body' do
-      expect(described_class.status(payee_id: '').status).to eq 'Active'
+      expect(described_class.status(payee_id: '').current_status).to eq 'ACTIVE'
     end
   end
 
   describe '.release' do
     before do
       allow(HTTParty).to receive(:delete)
-        .with(/.+\/payees\/.*/, anything)
+        .with(%r{.+/payees/.*}, anything)
         .and_return(
           stub_http_response(
             body: {
@@ -67,7 +70,7 @@ RSpec.describe Payoneer::Payee do
   describe '.details' do
     before do
       allow(HTTParty).to receive(:get)
-        .with(/.+\/details/, anything)
+        .with(%r{.+/details}, anything)
         .and_return(
           stub_http_response(
             body: {

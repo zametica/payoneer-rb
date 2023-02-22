@@ -6,7 +6,7 @@ RSpec.describe Payoneer::Program do
   describe '.balance' do
     before do
       allow(HTTParty).to receive(:get)
-        .with(/.+\/balance/, anything)
+        .with(%r{.+/balance}, anything)
         .and_return(
           stub_http_response(
             body: {
