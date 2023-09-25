@@ -39,7 +39,7 @@ Use `{ consent: true }` if user needs to be redirected to consent flow after reg
 
 ### Get the payee details
 ```ruby
-> response = Payoneer.Payee.details(payee_id: 1)
+> response = Payoneer::Payee.details(payee_id: 1)
 => #<Payoneer::Response:0x0000000111ce6640 @body={"account_id"=>"5510700", "type"=>"INDIVIDUAL", "contract"=>{"email"=>"demo008@yopmail.com"}, "address"=>{"city"=>"Berlin"}}>
 > response.contact[:email]
 => "demo008@yopmail.com"
@@ -49,7 +49,7 @@ Use `{ consent: true }` if user needs to be redirected to consent flow after reg
 
 ### Release the payee
 ```ruby
-> response = Payoneer.Payee.release(payee_id: 1)
+> response = Payoneer::Payee.release(payee_id: 1)
 => #<Payoneer::Response:0x00000001110e7060 @body={"payee_id"=>"12345"}>
 ```
 
@@ -69,9 +69,9 @@ For payment status check use `.status` method described bellow.
 
 ### Check the payout status
 ```ruby
-> response = Payoneer::Payour.status(payment_id: '123abc')
+> response = Payoneer::Payout.status(payment_id: '123abc')
 => #<Payoneer::Payout::Status:0x000000011005dac8 @body={"status"=>"Pending", "payment_id"=>"123abc"}>
-> response_failed = Payoneer::Payour.status(payment_id: 'abc123')
+> response_failed = Payoneer::Payout.status(payment_id: 'abc123')
 => #<Payoneer::Payout::Status:0x0000000107a66a28 @body={"status"=>"Failed", "payment_id"=>"abc123", "error"=>{"description"=>"Server Error", "reason"=>nil}}>
 > response_failed.error['description']
 => 'Server Error'
